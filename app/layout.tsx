@@ -1,6 +1,8 @@
 import ConnectivityBanner from "@/components/ConectivityBanner";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import { RegisterSW } from "@/components/RegisterSW";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
@@ -35,6 +37,8 @@ const RootLayout = ({
                     {children}
                     <ConnectivityBanner />
                     <RegisterSW />
+                    <Analytics />
+                    <SpeedInsights />
                 </ThemeProvider>
             </body>
         </html>
