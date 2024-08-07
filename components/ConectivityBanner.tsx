@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -19,25 +21,37 @@ const ConnectivityBanner = () => {
         };
 
         const handleMessage = (event: MessageEvent) => {
-            if (event.data && event.data.type === "ONLINE") {
-                handleOnline();
-            } else if (event.data && event.data.type === "OFFLINE") {
-                handleOffline();
+            if (
+                event.data &&
+                typeof event.data === "object" &&
+                "type" in event.data
+            ) {
+                if (event.data.type === "ONLINE") {
+                    handleOnline();
+                } else if (event.data.type === "OFFLINE") {
+                    handleOffline();
+                }
             }
         };
 
         window.addEventListener("online", handleOnline);
         window.addEventListener("offline", handleOffline);
-        navigator.serviceWorker.addEventListener("message", handleMessage);
+
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.addEventListener("message", handleMessage);
+        }
+
         setIsOnline(navigator.onLine);
 
         return () => {
             window.removeEventListener("online", handleOnline);
             window.removeEventListener("offline", handleOffline);
-            navigator.serviceWorker.removeEventListener(
-                "message",
-                handleMessage
-            );
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.removeEventListener(
+                    "message",
+                    handleMessage
+                );
+            }
         };
     }, []);
 

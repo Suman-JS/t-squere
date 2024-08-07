@@ -7,9 +7,9 @@ export function RegisterSW() {
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker
                 .register("/service-worker.js")
-                .catch((error) =>
-                    console.error("Service Worker registration failed")
-                );
+                .catch((error: unknown) => {
+                    console.log("Failed to load service-worker due to", error);
+                });
         }
     }, []);
 
